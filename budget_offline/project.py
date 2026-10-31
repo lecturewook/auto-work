@@ -13,6 +13,7 @@ from decimal import Decimal, localcontext
 from . import VERSION, SCHEMA_VERSION
 from .numbers import normalize, key_complete, KEY_FIELDS
 from .safety import SafeError, MAX_FILE, digest, canonical, atomic_bytes
+from .privileges import require_standard_user
 
 PASS = ('정확 일치', '변환 후 정확 일치')
 
@@ -49,6 +50,7 @@ def validate_rules(rules):
 
 class Project:
     def __init__(self, root, create=False, name=None):
+        require_standard_user()
         self.root = Path(root).absolute()
         if str(self.root).startswith(('\\\\', '//')) or self.root.is_symlink():
             raise SafeError('네트워크 공유·심볼릭 링크 경로는 사용할 수 없습니다.')
@@ -58,8 +60,8 @@ class Project:
             self.root.mkdir(parents=True, exist_ok=True)
         if not self.root.is_dir() or (not create and not (self.root / 'project.db').is_file()):
             raise SafeError('프로젝트 폴더 또는 project.db가 없습니다.')
-        for name in ('project.db', '.lock', 'originals', 'work', 'exports'):
-            if (self.root / name).is_symlink():
+        for internal_name in ('project.db', '.lock', 'originals', 'work', 'exports'):
+            if (self.root / internal_name).is_symlink():
                 raise SafeError('프로젝트 내부의 연결 파일·연결 폴더는 허용하지 않습니다.')
         self.lock = open(self.root / '.lock', 'a+b')
         try:

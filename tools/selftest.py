@@ -11,10 +11,12 @@ from budget_offline.project import Project, PASS, key_id
 from budget_offline.outputs import export_workbook
 from budget_offline.backup import backup, restore
 from budget_offline.safety import SafeError
+from budget_offline.privileges import require_standard_user
 from tools.make_fixtures import generate, key, row, xlsx
 
 
 def run(root,departments=3):
+    require_standard_user()
     root=Path(root)
     if root.exists():raise SafeError('시험 결과 위치는 존재하지 않는 새 폴더를 지정하세요.')
     root.mkdir(parents=True)

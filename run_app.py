@@ -1,13 +1,18 @@
 """네트워크 리스너·웹서버·자동 업데이트 없는 로컬 화면 진입점."""
-import os
 import sys
+from pathlib import Path
+from budget_offline.privileges import require_standard_user, PrivilegeError, show_error
 
 
 def main():
-    if os.name == 'nt':
-        import ctypes
-        if not ctypes.windll.shell32.IsUserAnAdmin():
-            ctypes.windll.user32.MessageBoxW(None,'기관 승인 후 실행.cmd를 마우스 오른쪽 버튼으로 눌러 관리자 권한으로 실행하세요. 관리자 권한 자체가 보안을 보장하지는 않습니다.','실행 권한 확인',0x10)
+    try:
+        require_standard_user()
+    except PrivilegeError as error:
+        show_error(error)
+        return 1
+    if (Path(__file__).resolve().parent / 'PACKAGE_MANIFEST.json').exists():
+        from tools.verify_bundle import main as verify_bundle
+        if verify_bundle():
             return 1
     from budget_offline.gui import main as gui_main
     return gui_main()

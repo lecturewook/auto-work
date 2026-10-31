@@ -1,0 +1,11 @@
+{
+  "app": "0.1.1",
+  "platform": "Linux Qt offscreen",
+  "input_files": 6,
+  "initial_observations": 24,
+  "business_keys": 12,
+  "approved_before_revision": 1,
+  "after_revision_status": "중복·수정본 확인 필요",
+  "after_revision_approval": "재검토 필요",
+  "windows_executable_tested": false
+}

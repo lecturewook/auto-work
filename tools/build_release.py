@@ -6,7 +6,7 @@ import struct
 import zipfile
 from pathlib import Path
 
-VERSION='0.1.0'
+VERSION='0.1.1'
 ROOT=Path(__file__).resolve().parents[1]
 DEST=ROOT/'dist'
 FOLDERS=['budget_offline','rules','samples','docs','tools','tests','third_party']
@@ -63,10 +63,10 @@ def build():
     for name in ('python.exe','pythonw.exe','python312.dll'):
         data=(runtime/name).read_bytes();offset=struct.unpack_from('<I',data,60)[0]
         assert data[offset:offset+4]==b'PE\0\0' and struct.unpack_from('<H',data,offset+4)[0]==0x8664
-    write_cmd(stage,'설정_관리자.cmd','"runtime\\python.exe" -E -s "tools\\verify_bundle.py"\nif errorlevel 1 goto fail\npowershell.exe -NoProfile -NonInteractive -ExecutionPolicy RemoteSigned -File "tools\\windows_policy.ps1" -Mode Install\nif errorlevel 1 goto fail\necho Setup complete. Physical network isolation must be verified by your institution.\npause\nexit /b 0\n:fail\necho Setup failed. Ask your institutional administrator. Do not disable security controls.\npause\nexit /b 1\n')
-    write_cmd(stage,'실행.cmd','"runtime\\python.exe" -E -s "tools\\verify_bundle.py"\nif errorlevel 1 goto fail\npowershell.exe -NoProfile -NonInteractive -ExecutionPolicy RemoteSigned -File "tools\\windows_policy.ps1" -Mode Check\nif errorlevel 1 goto fail\n"runtime\\python.exe" -E -s "run_app.py"\nif errorlevel 1 goto fail\nexit /b 0\n:fail\necho Launch failed. See docs\\TROUBLESHOOTING.md.\npause\nexit /b 1\n')
-    write_cmd(stage,'가상시험.cmd','"runtime\\python.exe" -E -s "tools\\verify_bundle.py"\nif errorlevel 1 goto fail\npowershell.exe -NoProfile -NonInteractive -ExecutionPolicy RemoteSigned -File "tools\\windows_policy.ps1" -Mode Check\nif errorlevel 1 goto fail\n"runtime\\python.exe" -E -s "tools\\selftest.py" "selftest-results\\test-%RANDOM%-%RANDOM%" --departments 3\nif errorlevel 1 goto fail\necho PASS. Review result.json in selftest-results.\npause\nexit /b 0\n:fail\necho FAILED. Do not use real work data.\npause\nexit /b 1\n')
-    manifest={'app':VERSION,'architecture':'Windows x86-64','windows_execution_validated':False,'files':{p.relative_to(stage).as_posix():sha(p) for p in sorted(stage.rglob('*')) if p.is_file()}}
+    write_cmd(stage,'방화벽설정_기관관리자전용.cmd','powershell.exe -NoProfile -NonInteractive -ExecutionPolicy RemoteSigned -File "tools\\windows_policy.ps1" -Mode Install\nif errorlevel 1 goto fail\necho Firewall setup completed. Close this administrator window.\necho Run the application separately by double-clicking its normal launcher.\npause\nexit /b 0\n:fail\necho Firewall setup failed. Ask the institutional administrator.\npause\nexit /b 1\n')
+    write_cmd(stage,'실행.cmd','"runtime\\python.exe" -E -s -B "run_app.py"\nif errorlevel 1 goto fail\nexit /b 0\n:fail\necho Launch stopped. Administrator execution is prohibited. See docs\\TROUBLESHOOTING.md.\npause\nexit /b 1\n')
+    write_cmd(stage,'가상시험.cmd','"runtime\\python.exe" -E -s -B "tools\\launch_selftest.py"\nif errorlevel 1 goto fail\npause\nexit /b 0\n:fail\necho Test stopped. Use a normal user account. Do not use real work data.\npause\nexit /b 1\n')
+    manifest={'app':VERSION,'architecture':'Windows x86-64','windows_execution_validated':False,'execution_mode':'standard-user-only','files':{p.relative_to(stage).as_posix():sha(p) for p in sorted(stage.rglob('*')) if p.is_file()}}
     (stage/'PACKAGE_MANIFEST.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf-8')
     archive(stage,DEST/f'BudgetOffline-{VERSION}-Windows-x64.zip')
     source=DEST/'source'

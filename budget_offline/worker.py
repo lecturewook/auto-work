@@ -2,9 +2,11 @@
 import json
 import sys
 from .readers import read_file
+from .privileges import require_standard_user
 
 
 def main():
+    require_standard_user()
     request = json.loads(sys.stdin.read())
     try:
         result = read_file(request['path'], request['rules'])

@@ -7,11 +7,11 @@
 - `budget_offline/readers.py`: HWPX/XLSX/HWP 텍스트 읽기. `worker.py`는 시간 제한용 별도 프로세스.
 - `numbers.py`: 키·숫자·단위 변환. `project.py`: 원본 관리, DB, 연결·비교·승인.
 - `outputs.py`: long/wide·근거 보고서·출력 검증. `backup.py`: 백업·복구.
-- `gui.py`: 한국어 화면. `offline.py`: Python 소켓 금지. `run_app.py`: Windows 권한 검사·시작.
+- `gui.py`: 한국어 화면. `offline.py`: Python 소켓 금지. `privileges.py`: Windows 상승 권한 차단. `run_app.py`: 일반 사용자 확인·묶음 검증·화면 시작.
 - `rules/demo-v1.json`: 새 프로젝트용 가상 규칙. `samples`: 처음부터 만든 가상 입력과 정답.
 - `tests/test_workflow.py`: 기능·안전장치 시험. `tools/selftest.py`: pytest 없이 실행할 수 있는 전체 흐름 시험.
 - `tools/check_gui.py`: Linux offscreen 화면·배치 취소 시험.
-- `tools/windows_policy.ps1`: Windows 방화벽 설정/확인/제거. Windows 실기기 미검증.
+- `tools/windows_policy.ps1`: 기관 관리자만 사용하는 Windows 방화벽 설정/확인/제거. 업무 프로그램 실행과 분리. Windows 실기기 미검증.
 
 ## 개발 환경
 

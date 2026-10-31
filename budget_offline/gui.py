@@ -12,6 +12,7 @@ from .numbers import KEY_FIELDS
 from .outputs import export_workbook
 from .backup import backup, restore
 from .safety import SafeError, canonical
+from .privileges import require_standard_user, PrivilegeError
 
 
 class ImportJob(QThread):
@@ -143,7 +144,7 @@ class Window(QMainWindow):
         try:
             action()
         except Exception as e:
-            message = str(e) if isinstance(e,(SafeError,ValueError,json.JSONDecodeError)) else f'작업 실패 ({type(e).__name__}). 폴더 권한·파일 잠금·남은 공간을 확인하세요.'
+            message = str(e) if isinstance(e,(SafeError,PrivilegeError,ValueError,json.JSONDecodeError)) else f'작업 실패 ({type(e).__name__}). 폴더 권한·파일 잠금·남은 공간을 확인하세요.'
             QMessageBox.warning(self,'작업을 완료하지 못했습니다',message)
 
     def need(self):
@@ -204,7 +205,7 @@ class Window(QMainWindow):
             values=[]
             for role in ('한글','엑셀'):
                 values.append(' | '.join(f'{o["raw"]} {o["unit"]} ({o["location"]})' for o in i['observations'] if o['role']==role))
-            rows.append((i,[' / '.join(i['key'].values()),*values,i['status'],i['approval'],i['reason']]))
+            rows.append((i,[' / '.join(i['key'][k] for k in KEY_FIELDS),*values,i['status'],i['approval'],i['reason']]))
         self.fill('compare',['업무 키','한글 근거','엑셀 근거','비교 판정','업무 승인','이유'],rows)
         self.fill('preview',list(KEY_FIELDS)+['표준값','단위','판정','승인'],[(i,[i['key'][k] for k in KEY_FIELDS]+[i['value'],i['unit'],i['status'],i['approval']]) for i in items])
         self.management.setPlainText(f'프로젝트: {p.root}\nDB 구조: {p.meta("schema")}\n프로그램: {VERSION}\n규칙: {p.rules["version"]}\n\n원본: originals\n작업 사본: work\n결과: exports\n검토·가져오기·출력 이력: project.db\n\n작업은 각 단계에서 자동 저장됩니다. 한 프로젝트는 한 사용자만 열 수 있습니다.\n공식 최종본 출력, 자동 계산식, 자동 수정본 선택, 일괄 승인은 이 시험판에서 제공하지 않습니다.')
@@ -225,6 +226,17 @@ class Window(QMainWindow):
             return
         if key=='obs':
             self.detail.setPlainText(f'원문: {r["raw"]}\n출처: {r["name"]} / {r["location"]}\n맥락: {r["context"]}\n추출: {r["method"]}\n주의: {", ".join(r["flags"])}\n변환: {canonical(r["normalized"])}\n근거 ID: {r["id"]}\n원본 SHA-256: {r["hash"]}')
+        elif key in ('compare','preview'):
+            k=r['key']
+            lines=[f'업무 항목: {k["부서코드"]} / {k["사업코드"]} / {k["기간"]} / {k["예산구분"]} / {k["지표코드"]}',
+                   f'세부차원: {k["세부차원"]} | 집계수준: {k["집계수준"]} | 재원: {k["재원"]}',
+                   f'비교 판정: {r["status"]} | 업무 승인: {r["approval"]} | 검토자: {r["reviewer"] or "미입력"}',
+                   f'표준값: {r["value"] if r["value"] is not None else "확정하지 않음"} {r["unit"] or ""}',
+                   '판정 이유: '+r['reason']]
+            for o in r['observations']:
+                lines.append(f'{o["role"]}: {o["raw"]} {o["unit"]} → {o["normalized"]["value"] or "미확정"} {o["normalized"]["base_unit"] or ""} / 출처: {o["name"]}, {o["location"]}')
+            lines.extend(['검토 이유: '+(r['review_reason'] or '미입력'),'항목 ID: '+r['id']])
+            self.detail.setPlainText('\n'.join(lines))
         else:
             self.detail.setPlainText(json.dumps(r,ensure_ascii=False,indent=2))
 
@@ -402,6 +414,7 @@ class Window(QMainWindow):
 
 
 def main():
+    require_standard_user()
     app=QApplication([])
     app.setApplicationName('예산 근거 대조 시험판')
     app.setStyle('Fusion')
