@@ -1,4 +1,4 @@
-"""기존의 해시 검증된 Windows 패키지만 사용. 네트워크 호출·크로스 컴파일 없음."""
+"""해시 검증된 Windows 패키지로 ZIP 구성. 도구 준비 후 네트워크 호출 없음."""
 import hashlib
 import json
 import shutil
@@ -6,11 +6,11 @@ import struct
 import zipfile
 from pathlib import Path
 
-VERSION='0.1.1'
+VERSION='0.1.2'
 ROOT=Path(__file__).resolve().parents[1]
 DEST=ROOT/'dist'
-FOLDERS=['budget_offline','rules','samples','docs','tools','tests','third_party']
-FILES=['README.md','requirements.txt','requirements-dev.txt','pyproject.toml','run_app.py','LICENSE','DEPENDENCY_HASHES.json']
+FOLDERS=['budget_offline','rules','samples','docs','tools','tests','third_party','launcher']
+FILES=['README.md','requirements.txt','requirements-dev.txt','pyproject.toml','run_app.py','LICENSE','DEPENDENCY_HASHES.json','BUILD_TOOLCHAIN.json']
 
 
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
@@ -27,7 +27,7 @@ def archive(folder,path):
 
 def copy_app(stage):
     for folder in FOLDERS:
-        shutil.copytree(ROOT/folder,stage/folder,ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
+        shutil.copytree(ROOT/folder,stage/folder,ignore=shutil.ignore_patterns('__pycache__','*.pyc','payload.zip','.cache'))
     for name in FILES:shutil.copy2(ROOT/name,stage/name)
 
 
@@ -64,7 +64,7 @@ def build():
         data=(runtime/name).read_bytes();offset=struct.unpack_from('<I',data,60)[0]
         assert data[offset:offset+4]==b'PE\0\0' and struct.unpack_from('<H',data,offset+4)[0]==0x8664
     write_cmd(stage,'방화벽설정_기관관리자전용.cmd','powershell.exe -NoProfile -NonInteractive -ExecutionPolicy RemoteSigned -File "tools\\windows_policy.ps1" -Mode Install\nif errorlevel 1 goto fail\necho Firewall setup completed. Close this administrator window.\necho Run the application separately by double-clicking its normal launcher.\npause\nexit /b 0\n:fail\necho Firewall setup failed. Ask the institutional administrator.\npause\nexit /b 1\n')
-    write_cmd(stage,'실행.cmd','"runtime\\python.exe" -E -s -B "run_app.py"\nif errorlevel 1 goto fail\nexit /b 0\n:fail\necho Launch stopped. Administrator execution is prohibited. See docs\\TROUBLESHOOTING.md.\npause\nexit /b 1\n')
+    write_cmd(stage,'실행.cmd','if not exist "%~dp0runtime\\python.exe" goto missing\nif not exist "%~dp0run_app.py" goto missing\n"%~dp0runtime\\python.exe" -E -s -B "%~dp0run_app.py"\nif errorlevel 1 goto fail\nexit /b 0\n:missing\necho Bundled program files are missing. Python installation is NOT needed.\necho Use BudgetOffline-0.1.2-Windows-x64.exe or fully extract the Windows ZIP.\necho If files were quarantined, ask your institutional security administrator.\npause\nexit /b 2\n:fail\necho Launch failed. Read the specific error above and docs\\TROUBLESHOOTING.md.\necho Do not run as administrator.\npause\nexit /b 1\n')
     write_cmd(stage,'가상시험.cmd','"runtime\\python.exe" -E -s -B "tools\\launch_selftest.py"\nif errorlevel 1 goto fail\npause\nexit /b 0\n:fail\necho Test stopped. Use a normal user account. Do not use real work data.\npause\nexit /b 1\n')
     manifest={'app':VERSION,'architecture':'Windows x86-64','windows_execution_validated':False,'execution_mode':'standard-user-only','files':{p.relative_to(stage).as_posix():sha(p) for p in sorted(stage.rglob('*')) if p.is_file()}}
     (stage/'PACKAGE_MANIFEST.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf-8')

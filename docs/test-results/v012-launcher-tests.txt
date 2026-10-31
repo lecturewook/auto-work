@@ -1,0 +1,46 @@
+=== RUN   TestPrepareUnicodeCacheWithoutPythonOrPath
+--- PASS: TestPrepareUnicodeCacheWithoutPythonOrPath (0.00s)
+=== RUN   TestPreparedFilesExact
+--- PASS: TestPreparedFilesExact (0.00s)
+=== RUN   TestChangedOrMissingRuntimeStopsInsteadOfRecreating
+=== RUN   TestChangedOrMissingRuntimeStopsInsteadOfRecreating/changed
+=== RUN   TestChangedOrMissingRuntimeStopsInsteadOfRecreating/missing
+=== RUN   TestChangedOrMissingRuntimeStopsInsteadOfRecreating/extra
+--- PASS: TestChangedOrMissingRuntimeStopsInsteadOfRecreating (0.00s)
+    --- PASS: TestChangedOrMissingRuntimeStopsInsteadOfRecreating/changed (0.00s)
+    --- PASS: TestChangedOrMissingRuntimeStopsInsteadOfRecreating/missing (0.00s)
+    --- PASS: TestChangedOrMissingRuntimeStopsInsteadOfRecreating/extra (0.00s)
+=== RUN   TestCancelKeepsNoPartialApplication
+--- PASS: TestCancelKeepsNoPartialApplication (0.00s)
+=== RUN   TestUnsafeNamesAndCaseCollisionsRejected
+=== RUN   TestUnsafeNamesAndCaseCollisionsRejected/../outside
+=== RUN   TestUnsafeNamesAndCaseCollisionsRejected//absolute
+=== RUN   TestUnsafeNamesAndCaseCollisionsRejected/C:/drive
+=== RUN   TestUnsafeNamesAndCaseCollisionsRejected/folder\escape
+=== RUN   TestUnsafeNamesAndCaseCollisionsRejected/CON.txt
+=== RUN   TestUnsafeNamesAndCaseCollisionsRejected/a/../b
+=== RUN   TestUnsafeNamesAndCaseCollisionsRejected/trail.
+=== RUN   TestUnsafeNamesAndCaseCollisionsRejected/AUX
+=== RUN   TestUnsafeNamesAndCaseCollisionsRejected/folder_/file
+=== RUN   TestUnsafeNamesAndCaseCollisionsRejected/RUN_APP.PY
+--- PASS: TestUnsafeNamesAndCaseCollisionsRejected (0.00s)
+    --- PASS: TestUnsafeNamesAndCaseCollisionsRejected/../outside (0.00s)
+    --- PASS: TestUnsafeNamesAndCaseCollisionsRejected//absolute (0.00s)
+    --- PASS: TestUnsafeNamesAndCaseCollisionsRejected/C:/drive (0.00s)
+    --- PASS: TestUnsafeNamesAndCaseCollisionsRejected/folder\escape (0.00s)
+    --- PASS: TestUnsafeNamesAndCaseCollisionsRejected/CON.txt (0.00s)
+    --- PASS: TestUnsafeNamesAndCaseCollisionsRejected/a/../b (0.00s)
+    --- PASS: TestUnsafeNamesAndCaseCollisionsRejected/trail. (0.00s)
+    --- PASS: TestUnsafeNamesAndCaseCollisionsRejected/AUX (0.00s)
+    --- PASS: TestUnsafeNamesAndCaseCollisionsRejected/folder_/file (0.00s)
+    --- PASS: TestUnsafeNamesAndCaseCollisionsRejected/RUN_APP.PY (0.00s)
+=== RUN   TestLinksRejected
+--- PASS: TestLinksRejected (0.00s)
+=== RUN   TestExistingVersionIsNotOverwritten
+--- PASS: TestExistingVersionIsNotOverwritten (0.00s)
+=== RUN   TestInvalidManifestOrCorruptArchive
+--- PASS: TestInvalidManifestOrCorruptArchive (0.00s)
+=== RUN   TestRealReleasePayload
+--- PASS: TestRealReleasePayload (2.35s)
+PASS
+ok  	budgetoffline/launcher	2.368s

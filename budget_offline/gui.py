@@ -88,12 +88,12 @@ class Window(QMainWindow):
         notice.setStyleSheet('background:#fff0d5;padding:10px;color:#694b12')
         layout.addWidget(notice)
         top = QHBoxLayout()
-        for text, action in [('새 프로젝트',self.create),('프로젝트 열기',self.open_project),('백업 복구',self.restore_project),('사용 안내',self.help)]:
+        for text, action in [('가상자료로 시작',self.start_demo),('새 프로젝트',self.create),('프로젝트 열기',self.open_project),('백업 복구',self.restore_project),('사용 안내',self.help)]:
             top.addWidget(self.button(text,action))
         self.top = QWidget()
         self.top.setLayout(top)
         layout.addWidget(self.top)
-        self.status_label = QLabel('새 프로젝트를 만들거나 기존 프로젝트 폴더를 여세요. 자료는 PC 안에 저장됩니다.')
+        self.status_label = QLabel('처음이면 [가상자료로 시작]을 누르세요. 실제 작업은 [새 프로젝트] 또는 [프로젝트 열기]로 시작합니다. 자료는 PC 안에 저장됩니다.')
         self.status_label.setWordWrap(True)
         layout.addWidget(self.status_label)
         controls = QHBoxLayout()
@@ -259,6 +259,20 @@ class Window(QMainWindow):
         if path:
             self.project=Project(path)
             self.refresh()
+
+    def start_demo(self):
+        if self.project:
+            raise SafeError('현재 프로젝트를 작업 관리에서 먼저 닫으세요. 가상자료는 새 시험 프로젝트에만 넣습니다.')
+        samples = Path(__file__).resolve().parents[1] / 'samples'
+        required = json.loads((samples/'필수항목.json').read_text(encoding='utf-8'))
+        paths = sorted((samples/'정상자료').glob('*'))
+        if not paths or not all(p.suffix.lower() in ('.hwpx','.xlsx') for p in paths):
+            raise SafeError('동봉 가상자료가 없거나 바뀌었습니다. 배포 묶음을 확인하세요.')
+        self.create()
+        if not self.project:
+            return
+        self.project.set_expectations(required['keys'],required['departments'],'가상자료 시작 버튼')
+        self.start_import([str(p) for p in paths])
 
     def close_project(self):
         if self.project:

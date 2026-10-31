@@ -6,3 +6,6 @@ vendor/
 test-output/
 *.pyc
 *.log
+.build-tools/
+.cache/
+launcher/payload.zip

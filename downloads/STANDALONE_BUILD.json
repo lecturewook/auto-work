@@ -1,0 +1,12 @@
+{
+  "app": "0.1.2",
+  "go": "go1.27.3",
+  "target": "windows/amd64",
+  "subsystem": "Windows GUI",
+  "bytes": 93469184,
+  "sha256": "f30205be8988f8604a251ab6167a67cdbdd6b37c23a9cf2a293013207cda8a24",
+  "embedded_payload_sha256": "be25f81638981f59ff75bc2306f575091c0955542e2668a075de82e612e5515b",
+  "embedded_payload_bytes": 90029297,
+  "real_payload_extraction_test": "passed on Linux",
+  "windows_execution_validated": false
+}

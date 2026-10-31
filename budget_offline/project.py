@@ -16,6 +16,13 @@ from .safety import SafeError, MAX_FILE, digest, canonical, atomic_bytes
 from .privileges import require_standard_user
 
 PASS = ('정확 일치', '변환 후 정확 일치')
+APP_ROOT = Path(__file__).resolve().parents[1]
+
+
+def require_work_location(root):
+    """배포본의 불변 프로그램 폴더와 사용자의 작업·백업을 분리한다."""
+    if (APP_ROOT / 'PACKAGE_MANIFEST.json').is_file() and Path(root).resolve().is_relative_to(APP_ROOT.resolve()):
+        raise SafeError('프로그램 내부에는 작업·백업을 저장할 수 없습니다. 기관이 허용한 별도 로컬 작업 폴더를 선택하세요.')
 
 
 def now():
@@ -52,6 +59,7 @@ class Project:
     def __init__(self, root, create=False, name=None):
         require_standard_user()
         self.root = Path(root).absolute()
+        require_work_location(self.root)
         if str(self.root).startswith(('\\\\', '//')) or self.root.is_symlink():
             raise SafeError('네트워크 공유·심볼릭 링크 경로는 사용할 수 없습니다.')
         if create:
@@ -203,7 +211,7 @@ class Project:
         shutil.copyfile(self.root / f['original'], self.root / f['work'])
         try:
             worker_python = str(Path(sys.executable).with_name('python.exe')) if Path(sys.executable).name.lower() == 'pythonw.exe' else sys.executable
-            completed = subprocess.run([worker_python, '-E', '-s', '-m', 'budget_offline.worker'],
+            completed = subprocess.run([worker_python, '-E', '-s', '-B', '-m', 'budget_offline.worker'],
                 input=canonical({'path': str(self.root / f['work']), 'rules': self.rules}),
                 encoding='utf-8', stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                 cwd=Path(__file__).resolve().parent.parent, timeout=30,

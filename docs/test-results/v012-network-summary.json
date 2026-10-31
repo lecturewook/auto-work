@@ -1,0 +1,8 @@
+{
+  "platform": "Linux, Qt offscreen",
+  "app": "0.1.2",
+  "scenario": "check_gui including actual demo button and worker reads",
+  "trace_files": 15,
+  "network_syscalls": 0,
+  "windows_execution_validated": false
+}

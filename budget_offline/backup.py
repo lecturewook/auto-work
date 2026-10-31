@@ -6,12 +6,13 @@ import tempfile
 import zipfile
 from pathlib import Path
 from pathlib import PurePosixPath
-from .project import Project, now
+from .project import Project, now, require_work_location
 from .safety import SafeError, digest, canonical, safe_zip
 
 
 def backup(project, destination):
     destination = Path(destination).absolute()
+    require_work_location(destination)
     if destination.exists() or destination.is_relative_to(project.root.resolve()):
         raise SafeError('프로젝트 밖에 새 백업 파일 이름을 지정하세요.')
     if project.integrity():
@@ -50,6 +51,7 @@ def backup(project, destination):
 
 def restore(archive, destination):
     destination = Path(destination).absolute()
+    require_work_location(destination)
     if destination.exists():
         raise SafeError('복구 위치는 존재하지 않는 새 폴더여야 합니다. 기존 프로젝트를 덮어쓰지 않습니다.')
     with tempfile.TemporaryDirectory(prefix='restore-',dir=destination.parent) as td:
