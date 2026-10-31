@@ -1,0 +1,124 @@
+{
+  "environment": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "python": "3.12.14",
+  "departments": 52,
+  "initial_files": 104,
+  "input_bytes": 378440,
+  "expected_metrics": 208,
+  "extracted_observations": 416,
+  "manual_mapping_required": 416,
+  "missing_after_mapping": 0,
+  "held_after_mapping": 0,
+  "false_pass": 0,
+  "unauthorized_approved_export": 0,
+  "unauthorized_final_export": 0,
+  "initial_import_seconds": 9.797,
+  "total_seconds": 25.979,
+  "parent_peak_rss_mib_linux": 43.2890625,
+  "tests": [
+    {
+      "test": "자동 사업 연결 없음",
+      "passed": true,
+      "actual": {
+        "프로젝트": "시험프로젝트",
+        "가져오기 횟수": 104,
+        "원본 파일": 104,
+        "처리 성공": 104,
+        "처리 실패": 0,
+        "미지원": 0,
+        "파일 제외": 0,
+        "추출 근거": 416,
+        "연결 미확인": 416,
+        "업무 키": 208,
+        "확정 가능": 0,
+        "승인": 0,
+        "누락": 0,
+        "불일치": 0,
+        "등록 부서": 52,
+        "출력 성공": 0,
+        "규칙": "가상규칙-1"
+      }
+    },
+    {
+      "test": "가상 정답 일치",
+      "passed": true,
+      "actual": {
+        "exact_or_converted": 208,
+        "expected": 208,
+        "false_pass": 0
+      }
+    },
+    {
+      "test": "미승인 출력 차단",
+      "passed": true,
+      "actual": 0
+    },
+    {
+      "test": "재가져오기 이중 집계 없음",
+      "passed": true,
+      "actual": {
+        "프로젝트": "시험프로젝트",
+        "가져오기 횟수": 208,
+        "원본 파일": 104,
+        "처리 성공": 104,
+        "처리 실패": 0,
+        "미지원": 0,
+        "파일 제외": 0,
+        "추출 근거": 416,
+        "연결 미확인": 0,
+        "업무 키": 208,
+        "확정 가능": 208,
+        "승인": 208,
+        "누락": 0,
+        "불일치": 0,
+        "등록 부서": 52,
+        "출력 성공": 2,
+        "규칙": "가상규칙-1"
+      }
+    },
+    {
+      "test": "백업 복원 근거·승인 유지",
+      "passed": true,
+      "actual": {
+        "프로젝트": "시험프로젝트",
+        "가져오기 횟수": 208,
+        "원본 파일": 104,
+        "처리 성공": 104,
+        "처리 실패": 0,
+        "미지원": 0,
+        "파일 제외": 0,
+        "추출 근거": 416,
+        "연결 미확인": 0,
+        "업무 키": 208,
+        "확정 가능": 208,
+        "승인": 208,
+        "누락": 0,
+        "불일치": 0,
+        "등록 부서": 52,
+        "출력 성공": 2,
+        "규칙": "가상규칙-1"
+      }
+    },
+    {
+      "test": "추가 자료 즉시 재검토",
+      "passed": true,
+      "actual": "재검토 필요"
+    },
+    {
+      "test": "수정본 자동 채택 금지",
+      "passed": true,
+      "actual": "중복·수정본 확인 필요"
+    },
+    {
+      "test": "미검증 공식 최종본 차단",
+      "passed": true,
+      "actual": 0
+    },
+    {
+      "test": "종료·재실행 유지",
+      "passed": true,
+      "actual": 105
+    }
+  ],
+  "limits": "Windows 실기기·한컴 렌더링·사람의 정답 검수는 이 자동시험에 포함되지 않음"
+}

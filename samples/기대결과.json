@@ -1,0 +1,206 @@
+[
+  {
+    "key": {
+      "부서코드": "D001",
+      "사업코드": "P001",
+      "기간": "2026",
+      "예산구분": "시행예산",
+      "지표코드": "시행예산",
+      "세부차원": "전체",
+      "집계수준": "사업총액",
+      "재원": "전체"
+    },
+    "expected_value": "1000000",
+    "expected_unit": "KRW",
+    "after_manual_mapping": "변환 후 정확 일치",
+    "before_manual_mapping": "연결 불명",
+    "approved_by_default": false
+  },
+  {
+    "key": {
+      "부서코드": "D001",
+      "사업코드": "P001",
+      "기간": "2025",
+      "예산구분": "시행예산",
+      "지표코드": "전년도예산",
+      "세부차원": "전체",
+      "집계수준": "사업총액",
+      "재원": "전체"
+    },
+    "expected_value": "900000",
+    "expected_unit": "KRW",
+    "after_manual_mapping": "정확 일치",
+    "before_manual_mapping": "연결 불명",
+    "approved_by_default": false
+  },
+  {
+    "key": {
+      "부서코드": "D001",
+      "사업코드": "P001",
+      "기간": "2026",
+      "예산구분": "집행",
+      "지표코드": "집행률",
+      "세부차원": "전체",
+      "집계수준": "사업총액",
+      "재원": "전체"
+    },
+    "expected_value": "0.125",
+    "expected_unit": "ratio",
+    "after_manual_mapping": "변환 후 정확 일치",
+    "before_manual_mapping": "연결 불명",
+    "approved_by_default": false
+  },
+  {
+    "key": {
+      "부서코드": "D001",
+      "사업코드": "P001",
+      "기간": "2026",
+      "예산구분": "집행",
+      "지표코드": "예산사용률",
+      "세부차원": "전체",
+      "집계수준": "사업총액",
+      "재원": "전체"
+    },
+    "expected_value": "0.60",
+    "expected_unit": "ratio",
+    "after_manual_mapping": "변환 후 정확 일치",
+    "before_manual_mapping": "연결 불명",
+    "approved_by_default": false
+  },
+  {
+    "key": {
+      "부서코드": "D002",
+      "사업코드": "P001",
+      "기간": "2026",
+      "예산구분": "시행예산",
+      "지표코드": "시행예산",
+      "세부차원": "전체",
+      "집계수준": "사업총액",
+      "재원": "전체"
+    },
+    "expected_value": "1000000",
+    "expected_unit": "KRW",
+    "after_manual_mapping": "변환 후 정확 일치",
+    "before_manual_mapping": "연결 불명",
+    "approved_by_default": false
+  },
+  {
+    "key": {
+      "부서코드": "D002",
+      "사업코드": "P001",
+      "기간": "2025",
+      "예산구분": "시행예산",
+      "지표코드": "전년도예산",
+      "세부차원": "전체",
+      "집계수준": "사업총액",
+      "재원": "전체"
+    },
+    "expected_value": "900000",
+    "expected_unit": "KRW",
+    "after_manual_mapping": "정확 일치",
+    "before_manual_mapping": "연결 불명",
+    "approved_by_default": false
+  },
+  {
+    "key": {
+      "부서코드": "D002",
+      "사업코드": "P001",
+      "기간": "2026",
+      "예산구분": "집행",
+      "지표코드": "집행률",
+      "세부차원": "전체",
+      "집계수준": "사업총액",
+      "재원": "전체"
+    },
+    "expected_value": "0.125",
+    "expected_unit": "ratio",
+    "after_manual_mapping": "변환 후 정확 일치",
+    "before_manual_mapping": "연결 불명",
+    "approved_by_default": false
+  },
+  {
+    "key": {
+      "부서코드": "D002",
+      "사업코드": "P001",
+      "기간": "2026",
+      "예산구분": "집행",
+      "지표코드": "예산사용률",
+      "세부차원": "전체",
+      "집계수준": "사업총액",
+      "재원": "전체"
+    },
+    "expected_value": "0.60",
+    "expected_unit": "ratio",
+    "after_manual_mapping": "변환 후 정확 일치",
+    "before_manual_mapping": "연결 불명",
+    "approved_by_default": false
+  },
+  {
+    "key": {
+      "부서코드": "D003",
+      "사업코드": "P001",
+      "기간": "2026",
+      "예산구분": "시행예산",
+      "지표코드": "시행예산",
+      "세부차원": "전체",
+      "집계수준": "사업총액",
+      "재원": "전체"
+    },
+    "expected_value": "1000000",
+    "expected_unit": "KRW",
+    "after_manual_mapping": "변환 후 정확 일치",
+    "before_manual_mapping": "연결 불명",
+    "approved_by_default": false
+  },
+  {
+    "key": {
+      "부서코드": "D003",
+      "사업코드": "P001",
+      "기간": "2025",
+      "예산구분": "시행예산",
+      "지표코드": "전년도예산",
+      "세부차원": "전체",
+      "집계수준": "사업총액",
+      "재원": "전체"
+    },
+    "expected_value": "900000",
+    "expected_unit": "KRW",
+    "after_manual_mapping": "정확 일치",
+    "before_manual_mapping": "연결 불명",
+    "approved_by_default": false
+  },
+  {
+    "key": {
+      "부서코드": "D003",
+      "사업코드": "P001",
+      "기간": "2026",
+      "예산구분": "집행",
+      "지표코드": "집행률",
+      "세부차원": "전체",
+      "집계수준": "사업총액",
+      "재원": "전체"
+    },
+    "expected_value": "0.125",
+    "expected_unit": "ratio",
+    "after_manual_mapping": "변환 후 정확 일치",
+    "before_manual_mapping": "연결 불명",
+    "approved_by_default": false
+  },
+  {
+    "key": {
+      "부서코드": "D003",
+      "사업코드": "P001",
+      "기간": "2026",
+      "예산구분": "집행",
+      "지표코드": "예산사용률",
+      "세부차원": "전체",
+      "집계수준": "사업총액",
+      "재원": "전체"
+    },
+    "expected_value": "0.60",
+    "expected_unit": "ratio",
+    "after_manual_mapping": "변환 후 정확 일치",
+    "before_manual_mapping": "연결 불명",
+    "approved_by_default": false
+  }
+]

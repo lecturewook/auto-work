@@ -1,0 +1,44 @@
+{
+  "et_xmlfile-2.0.0-py3-none-any.whl": {
+    "sha256": "7a91720bc756843502c3b7504c77b8fe44217c85c537d85037f0f536151b2caa",
+    "url": "https://files.pythonhosted.org/packages/c1/8b/5fe2cc11fee489817272089c4203e679c63b570a5aaeb18d852ae3cbba6a/et_xmlfile-2.0.0-py3-none-any.whl",
+    "metadata_url": "https://pypi.org/pypi/et_xmlfile/2.0.0/json",
+    "upstream_hash_verified": true
+  },
+  "shiboken6-6.8.3-cp39-abi3-win_amd64.whl": {
+    "sha256": "bca3a94513ce9242f7d4bbdca902072a1631888e0aa3a8711a52cc5dbe93588f",
+    "url": "https://files.pythonhosted.org/packages/aa/29/e77f3fba5337f2d98f977eece0fd24cda6cf7d83be2699514d2ca1d34f6c/shiboken6-6.8.3-cp39-abi3-win_amd64.whl",
+    "metadata_url": "https://pypi.org/pypi/shiboken6/6.8.3/json",
+    "upstream_hash_verified": true
+  },
+  "PySide6_Essentials-6.8.3-cp39-abi3-win_amd64.whl": {
+    "sha256": "3c0fae5550aff69f2166f46476c36e0ef56ce73d84829eac4559770b0c034b07",
+    "url": "https://files.pythonhosted.org/packages/8e/0f/5d8c6da7586e57ee032643e0c0e62335ef1a1add1a980160ddd1654f1d8d/PySide6_Essentials-6.8.3-cp39-abi3-win_amd64.whl",
+    "metadata_url": "https://pypi.org/pypi/PySide6_Essentials/6.8.3/json",
+    "upstream_hash_verified": true
+  },
+  "openpyxl-3.1.5-py2.py3-none-any.whl": {
+    "sha256": "5282c12b107bffeef825f4617dc029afaf41d0ea60823bbb665ef3079dc79de2",
+    "url": "https://files.pythonhosted.org/packages/c0/da/977ded879c29cbd04de313843e76868e6e13408a94ed6b987245dc7c8506/openpyxl-3.1.5-py2.py3-none-any.whl",
+    "metadata_url": "https://pypi.org/pypi/openpyxl/3.1.5/json",
+    "upstream_hash_verified": true
+  },
+  "defusedxml-0.7.1-py2.py3-none-any.whl": {
+    "sha256": "a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61",
+    "url": "https://files.pythonhosted.org/packages/07/6c/aa3f2f849e01cb6a001cd8554a88d4c77c5c1a31c95bdf1cf9301e6d9ef4/defusedxml-0.7.1-py2.py3-none-any.whl",
+    "metadata_url": "https://pypi.org/pypi/defusedxml/0.7.1/json",
+    "upstream_hash_verified": true
+  },
+  "olefile-0.47-py2.py3-none-any.whl": {
+    "sha256": "543c7da2a7adadf21214938bb79c83ea12b473a4b6ee4ad4bf854e7715e13d1f",
+    "url": "https://files.pythonhosted.org/packages/17/d3/b64c356a907242d719fc668b71befd73324e47ab46c8ebbbede252c154b2/olefile-0.47-py2.py3-none-any.whl",
+    "metadata_url": "https://pypi.org/pypi/olefile/0.47/json",
+    "upstream_hash_verified": true
+  },
+  "python.3.12.10.nupkg": {
+    "sha256": "0eb85c2dfccccf1b17352de4c397f69194035b7d37149eacc16f1147d93de3b8",
+    "url": "https://api.nuget.org/v3-flatcontainer/python/3.12.10/python.3.12.10.nupkg",
+    "upstream_hash_verified": false,
+    "note": "Official NuGet HTTPS download. Windows signature not independently validated in Linux."
+  }
+}
