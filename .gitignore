@@ -9,3 +9,4 @@ test-output/
 .build-tools/
 .cache/
 launcher/payload.zip
+launcher/*.syso

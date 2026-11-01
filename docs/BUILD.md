@@ -1,5 +1,7 @@
 # 개발과 재현 가능한 빌드
 
+> 0.1.3 실행 방식: 단일 EXE를 그냥 더블클릭합니다. Windows에 일반 실행(asInvoker)을 명시했습니다. 높은 권한을 물려받으면 Windows의 UAC 연결 토큰, 같은 사용자 바탕화면 토큰, Windows 기본 사용자 제한 토큰 순서로 전환을 시도합니다. 전환 후보와 실제 자식 프로세스의 사용자·로그인 세션·상승 여부·무결성 수준·관리자 그룹·UI 접근 권한을 확인하고, 일반 권한인 경우에만 자료를 처리합니다. 전환 실패는 오류 코드를 표시하고 중단합니다. 아래의 단순 관리자 차단 설명은 이전 동작이며, ZIP의 실행.cmd에는 자동 전환 기능이 없습니다. Windows 보안 정책을 끄거나 변경하지 않습니다. Windows 11 실기기에서 자동 전환 성공 여부는 아직 미검증입니다.
+
 업무 PC에서 인터넷에 접속해 설치하는 절차가 아닙니다. 아래는 가상자료만 사용하는 개발·묶음 제작용 절차입니다. Windows ZIP은 공식 Windows 바이너리를 모아서 만들고 EXE는 그 ZIP을 포함한 Go 시작 도구를 교차 컴파일합니다. 교차 컴파일은 Linux에서 Windows용 실행 파일을 만드는 것입니다. Linux에서 Windows 프로그램을 실행했다고 주장하지 않습니다.
 
 ## 소스 구성
@@ -44,7 +46,7 @@ python tools/build_standalone.py
 2. 두 번째는 `BUILD_TOOLCHAIN.json`에 기록된 공식 Go SDK를 받아 SHA-256 대조 후 `.build-tools/go`에 준비합니다. 이미 보관한 파일이 맞으면 네트워크를 사용하지 않습니다. 다른 `/usr/bin/go` 명령을 SDK로 가정하지 않습니다.
 3. 세 번째는 네트워크 없이 Windows ZIP·소스 ZIP·안내서 ZIP을 만듭니다. `launcher/payload.zip`과 빌드 캐시는 소스 묶음에 포함하지 않습니다.
 4. 네 번째는 실제 Windows ZIP을 넣어 Linux에서 경로·해시·누락·취소 시험을 실행한 뒤 `GOOS=windows GOARCH=amd64 CGO_ENABLED=0`으로 EXE를 만듭니다. Go 외부 모듈은 없고, 모듈 다운로드와 자동 도구 갱신을 막습니다. TLS·배포 파일 해시 검증을 끄지 않습니다.
-5. `dist`의 `BudgetOffline-0.1.2-Windows-x64.exe`, 세 종류 ZIP, `SHA256SUMS.txt`, `STANDALONE_BUILD.json`을 확인합니다. EXE의 PE x64·GUI 형식과 정확한 ZIP 포함 여부를 검사합니다. 이것은 Windows 실행 시험을 대신하지 않습니다.
+5. `dist`의 `BudgetOffline-0.1.3-Windows-x64.exe`, 세 종류 ZIP, `SHA256SUMS.txt`, `STANDALONE_BUILD.json`을 확인합니다. EXE의 PE x64·GUI 형식과 정확한 ZIP 포함 여부를 검사합니다. 이것은 Windows 실행 시험을 대신하지 않습니다.
 6. 기관의 Windows 11 64비트 시험 PC에서 `LOCAL_ACCEPTANCE.md`를 수행합니다. Python 미설치 PC, 한글·공백 사용자 경로, 일반 사용자/관리자, 오프라인 실행, 보안제품·파일 격리·취소 조건을 확인합니다.
 
 Go SDK는 제작용이며 배포물에 SDK 전체를 넣지 않습니다. 최종 EXE에는 Go 표준 라이브러리가 정적으로 포함됩니다. Python·Qt는 EXE 안의 ZIP에서 꺼낸 뒤 동적으로 실행합니다. EXE 재빌드 때 `-trimpath -buildvcs=false -ldflags='-H=windowsgui -s -w -buildid='`를 사용합니다. 같은 입력과 도구로 재현할 수 있으며 OS·압축 도구가 바뀌는 경우 바이트 단위 동일성을 보장하지 않습니다.

@@ -6,6 +6,7 @@ import shutil
 import struct
 import subprocess
 from pathlib import Path
+from windows_manifest import manifest_object, embedded_manifest
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -28,8 +29,11 @@ def main():
         raise RuntimeError('SDK 버전이 다릅니다: '+version)
     payload = ROOT/'dist'/f'BudgetOffline-{VERSION}-Windows-x64.zip'
     embedded = ROOT/'launcher/payload.zip'
+    resource = ROOT/'launcher/manifest_windows_amd64.syso'
+    manifest = (ROOT/'launcher/app.manifest').read_bytes()
     shutil.copyfile(payload, embedded)
     try:
+        resource.write_bytes(manifest_object(manifest))
         # 실제 배포 ZIP을 읽고 추출·검증한다. 단위 시험용 가짜 실행 파일과 구분한다.
         subprocess.run([go, 'test', '-count=1', '-v', './...'], cwd=ROOT/'launcher',
                        env=dict(env, BUDGET_TEST_PAYLOAD=str(embedded)), check=True)
@@ -45,6 +49,8 @@ def main():
             raise RuntimeError('x64 machine required')
         if struct.unpack_from('<H', data, offset+24+68)[0] != 2:
             raise RuntimeError('Windows GUI subsystem required')
+        if embedded_manifest(data) != manifest:
+            raise RuntimeError('Windows asInvoker manifest not embedded correctly')
         if len(data) >= 100*1024**2:
             raise RuntimeError('Download artifact exceeds repository limit')
         payload_data = payload.read_bytes()
@@ -52,6 +58,8 @@ def main():
             raise RuntimeError('Exact release ZIP not found once in executable')
         result = {'app':VERSION, 'go':record['version'], 'target':'windows/amd64',
                   'subsystem':'Windows GUI', 'bytes':len(data), 'sha256':digest(binary),
+                  'execution_manifest':'asInvoker; uiAccess=false; RT_MANIFEST #1',
+                  'privilege_mode':'automatic reduction; verified standard user only',
                   'embedded_payload_sha256':digest(payload), 'embedded_payload_bytes':len(payload_data),
                   'real_payload_extraction_test':'passed on Linux', 'windows_execution_validated':False}
         (ROOT/'dist/STANDALONE_BUILD.json').write_text(json.dumps(result, indent=2)+'\n',encoding='utf-8')
@@ -60,6 +68,7 @@ def main():
         print(json.dumps(result, indent=2))
     finally:
         embedded.unlink(missing_ok=True)
+        resource.unlink(missing_ok=True)
 
 
 if __name__ == '__main__':

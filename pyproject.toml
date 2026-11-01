@@ -1,6 +1,6 @@
 [project]
 name = "budget-offline-trial"
-version = "0.1.2"
+version = "0.1.3"
 description = "오프라인 예산 근거 대조 시험판"
 requires-python = ">=3.12"
 

@@ -27,25 +27,6 @@ func message(s string) {
 	user32.NewProc("MessageBoxW").Call(0, uintptr(unsafe.Pointer(wide(s))), uintptr(unsafe.Pointer(wide("오프라인 예산 시험판"))), 0x10)
 }
 
-func standardUser() error {
-	process, _, _ := kernel32.NewProc("GetCurrentProcess").Call()
-	var token syscall.Handle
-	ok, _, _ := advapi32.NewProc("OpenProcessToken").Call(process, 8, uintptr(unsafe.Pointer(&token)))
-	if ok == 0 {
-		return errors.New("실행 권한을 확인할 수 없어 중단했습니다. 관리자 권한으로 다시 실행하지 마세요")
-	}
-	defer kernel32.NewProc("CloseHandle").Call(uintptr(token))
-	var elevated, returned uint32
-	ok, _, _ = advapi32.NewProc("GetTokenInformation").Call(uintptr(token), 20, uintptr(unsafe.Pointer(&elevated)), 4, uintptr(unsafe.Pointer(&returned)))
-	if ok == 0 || returned != 4 || elevated > 1 {
-		return errors.New("실행 권한을 확인할 수 없어 중단했습니다. 기관 담당자에게 확인하세요")
-	}
-	if elevated != 0 {
-		return errors.New("관리자 권한 실행을 차단했습니다. 일반 사용자 바탕화면에서 실행 파일을 더블클릭하세요")
-	}
-	return nil
-}
-
 type windowClass struct {
 	Size, Style                        uint32
 	Procedure                          uintptr
@@ -121,9 +102,10 @@ func (s *statusWindow) close() {
 }
 
 func run() error {
-	if err := standardUser(); err != nil {
-		return err
-	}
+	return guardedStartup(os.Args[1:], windowsStartup{}, runWork)
+}
+
+func runWork() error {
 	cache, err := os.UserCacheDir()
 	if err != nil {
 		return errors.New("일반 사용자 저장 폴더를 찾을 수 없습니다. 기관 담당자에게 확인하세요")
