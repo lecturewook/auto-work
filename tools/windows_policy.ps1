@@ -16,13 +16,13 @@ foreach ($exe in @('python.exe','pythonw.exe')) {
     $program = Join-Path $root ('runtime\' + $exe)
     if (-not (Test-Path -LiteralPath $program)) { throw "Runtime missing: $exe" }
     foreach ($direction in @('Inbound','Outbound')) {
-        $ruleName = "BudgetOffline-$tag-$exe-$direction"
+        $ruleName = "BudgetOfflineWeb-$tag-$exe-$direction"
         if ($Mode -eq 'Remove') {
             Get-NetFirewallRule -Name $ruleName -ErrorAction SilentlyContinue | Remove-NetFirewallRule
             continue
         }
         if ($Mode -eq 'Install' -and -not (Get-NetFirewallRule -Name $ruleName -ErrorAction SilentlyContinue)) {
-            New-NetFirewallRule -Name $ruleName -DisplayName $ruleName -Description 'Offline budget trial: block all IP communication for this packaged Python.' -Program $program -Direction $direction -Action Block -Enabled True -Profile Any -Protocol Any | Out-Null
+            New-NetFirewallRule -Name $ruleName -DisplayName $ruleName -Description 'Local web trial: block non-loopback IP communication for this packaged Python.' -Program $program -Direction $direction -Action Block -Enabled True -Profile Any -Protocol Any -RemoteAddress @('0.0.0.0-126.255.255.255','128.0.0.0-255.255.255.255','::/0') | Out-Null
         }
         $rule = Get-NetFirewallRule -PolicyStore ActiveStore -Name $ruleName -ErrorAction Stop
         $filter = $rule | Get-NetFirewallApplicationFilter

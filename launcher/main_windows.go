@@ -145,7 +145,7 @@ func runWork() error {
 		return err
 	}
 	defer log.Close()
-	cmd := exec.Command(filepath.Join(root, "runtime", "python.exe"), "-E", "-s", "-B", filepath.Join(root, "run_app.py"))
+	cmd := exec.Command(filepath.Join(root, "runtime", "python.exe"), "-E", "-s", "-B", filepath.Join(root, "run_web.py"))
 	cmd.Dir = root
 	cmd.Stdout = log
 	cmd.Stderr = log

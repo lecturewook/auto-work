@@ -102,3 +102,14 @@ def test_windows_token_api_reads_value_and_closes_handle(monkeypatch,elevated):
     monkeypatch.setattr(ctypes,'WinDLL',lambda name,**kw:kernel if name=='kernel32' else security,raising=False)
     assert privileges._windows_token_elevated() is elevated
     assert kernel.CloseHandle.call_args[0][0].value==77
+
+
+@pytest.mark.parametrize('failure',[False,True])
+def test_web_does_not_start_listener_with_admin_or_unknown_rights(monkeypatch,failure):
+    import run_web
+    windows_state(monkeypatch,elevated=True,failure=failure)
+    web = Mock()
+    monkeypatch.setitem(sys.modules,'budget_offline.local_web',SimpleNamespace(main=web))
+    monkeypatch.setattr(run_web,'show_error',Mock())
+    assert run_web.main()==1
+    web.assert_not_called()

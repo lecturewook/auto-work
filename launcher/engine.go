@@ -102,7 +102,7 @@ func openBundle(data []byte) (*bundle, error) {
 			return nil, errors.New("내장 파일 해시 형식이 올바르지 않습니다")
 		}
 	}
-	for _, name := range []string{"runtime/python.exe", "runtime/python312.dll", "run_app.py", "budget_offline/privileges.py"} {
+	for _, name := range []string{"runtime/python.exe", "runtime/python312.dll", "run_app.py", "run_web.py", "budget_offline/privileges.py"} {
 		if _, ok := b.files[name]; !ok {
 			return nil, fmt.Errorf("필수 실행 파일 없음: %s", name)
 		}

@@ -14,7 +14,7 @@ import (
 
 func fixture(t *testing.T, extra map[string]string) []byte {
 	t.Helper()
-	files := map[string]string{"runtime/python.exe": "fake executable for unpack unit test only", "runtime/python312.dll": "fake DLL", "run_app.py": "# synthetic", "budget_offline/privileges.py": "# guard fixture", "한글 폴더/공백 이름.txt": "가상내용"}
+	files := map[string]string{"runtime/python.exe": "fake executable for unpack unit test only", "runtime/python312.dll": "fake DLL", "run_app.py": "# synthetic", "run_web.py": "# web fixture", "budget_offline/privileges.py": "# guard fixture", "한글 폴더/공백 이름.txt": "가상내용"}
 	for k, v := range extra {
 		files[k] = v
 	}
@@ -72,7 +72,7 @@ func TestPreparedFilesExact(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(b.files) != 6 {
+	if len(b.files) != 7 {
 		t.Fatal(len(b.files))
 	}
 	if _, err = os.Stat(filepath.Join(root, "runtime", "python.exe")); err != nil {

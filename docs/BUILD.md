@@ -1,5 +1,7 @@
 # 개발과 재현 가능한 빌드
 
+> 현재 배포는 0.1.4 로컬 웹입니다. [로컬 웹 상세 안내](LOCAL_WEB_GUIDE.md)를 우선 따르세요. 아래 과거 데스크톱 전용 설명과 구분합니다. 일반 권한으로 실행하며 유일한 수신 예외는 127.0.0.1의 단일 웹 리스너입니다. 외부 연결·DNS·추가 리스너는 차단합니다. 새 방화벽 도구는 비루프백 원격 주소를 차단하는 BudgetOfflineWeb 규칙을 제안하며, Windows 실기기 검증과 기관 승인이 필요합니다. 기존 전체 IP 차단 규칙과의 충돌도 담당자가 확인해야 합니다.
+
 > 0.1.3 실행 방식: 단일 EXE를 그냥 더블클릭합니다. Windows에 일반 실행(asInvoker)을 명시했습니다. 높은 권한을 물려받으면 Windows의 UAC 연결 토큰, 같은 사용자 바탕화면 토큰, Windows 기본 사용자 제한 토큰 순서로 전환을 시도합니다. 전환 후보와 실제 자식 프로세스의 사용자·로그인 세션·상승 여부·무결성 수준·관리자 그룹·UI 접근 권한을 확인하고, 일반 권한인 경우에만 자료를 처리합니다. 전환 실패는 오류 코드를 표시하고 중단합니다. 아래의 단순 관리자 차단 설명은 이전 동작이며, ZIP의 실행.cmd에는 자동 전환 기능이 없습니다. Windows 보안 정책을 끄거나 변경하지 않습니다. Windows 11 실기기에서 자동 전환 성공 여부는 아직 미검증입니다.
 
 업무 PC에서 인터넷에 접속해 설치하는 절차가 아닙니다. 아래는 가상자료만 사용하는 개발·묶음 제작용 절차입니다. Windows ZIP은 공식 Windows 바이너리를 모아서 만들고 EXE는 그 ZIP을 포함한 Go 시작 도구를 교차 컴파일합니다. 교차 컴파일은 Linux에서 Windows용 실행 파일을 만드는 것입니다. Linux에서 Windows 프로그램을 실행했다고 주장하지 않습니다.
@@ -71,3 +73,9 @@ strace -ff -e trace=socket,connect,bind,listen,accept,accept4,sendto,sendmsg,rec
 원문값·변환값·판정·승인을 분리하고, 새 규칙·추출기 변경은 승인을 재사용하지 않도록 재처리해야 합니다. SQL이나 설정에 임의 코드를 넣지 않습니다. 실제 양식 지원은 기관 내부 정답과 새 실패 시험을 추가한 뒤 결정합니다. GUI 버튼을 막는 것만으로 충분하지 않으므로 저장·출력 함수의 검증도 유지합니다.
 
 기본 개발 테스트의 pytest는 개발용입니다. Windows 업무 실행 패키지에는 pytest가 필요하지 않으며, 가상시험.cmd는 일반 Python selftest 도구를 사용합니다. 새 라이브러리 추가 시 오프라인 포함·라이선스·통신 시도·취약점 점검을 다시 해야 합니다.
+
+## 0.1.4 웹 검증과 제작
+
+새 진입점은 run_web.py이며 Windows 실행.cmd와 EXE가 이를 호출합니다. HTTP 기능은 Python 표준 라이브러리만 사용합니다. Qt는 이전 데스크톱 진입점용으로 배포물에 보존했고 웹 실행에서는 불러오지 않습니다. 브라우저는 PC에 설치된 Edge를 사용합니다. 제작 순서는 기존처럼 tools/build_release.py → tools/build_standalone.py입니다.
+
+실제 HTTP 시험: `.venv/bin/python tools/check_local_web.py`. 소켓 정책 시험: `.venv/bin/python tools/check_loopback_policy.py`. 선택적인 Linux 브라우저 시험은 Chromium과 playwright-core를 준비한 제작 PC에서 `node tools/check_local_web_browser.cjs`로 수행합니다. BUDGET_PLAYWRIGHT 환경변수로 설치된 모듈 경로를 지정할 수 있습니다. 브라우저 시험 도구는 업무 실행 의존성이 아닙니다.

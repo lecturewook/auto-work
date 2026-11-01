@@ -1,4 +1,4 @@
-581d18ed848ccc2e069a088a64aee2321ac6060c9d8f5e1f25e309524d677c8a  BudgetOffline-0.1.3-Windows-x64.exe
-4bbccb3730b5ddba26b653eee4baf8a39cc638da291e0cf2d112464c83fd0b1a  BudgetOffline-0.1.3-Windows-x64.zip
-e0bbfd780c74de775f5625f5ef2b88cf274dccff73a6d17a4457f9905d33b82d  BudgetOffline-0.1.3-guides.zip
-626e5d2744a24ad8976c748ac6720d227c3a992cd9978a9f9112eb8c2e5f516d  BudgetOffline-0.1.3-source.zip
+70c70721cdca766320c5d2c3aa5edaa9edc9f04791efc38fd036e504fef12641  BudgetOffline-0.1.4-Windows-x64.exe
+d38a1e696f37f328a08e43c17a1af8f13d16637f3fe1761757bcf2eff0516b37  BudgetOffline-0.1.4-Windows-x64.zip
+c768d7043a61fd0865d433da782d5dc70125321baf1354ef3b55b6f83f72e875  BudgetOffline-0.1.4-guides.zip
+4679d933428f0314b950d9f8dabb5256e9d80802c8f557a0a7dfb758a4be1264  BudgetOffline-0.1.4-source.zip
